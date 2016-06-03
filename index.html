@@ -8,38 +8,99 @@
   <style>
     .header {
       text-align: center;
+     
     }
+
+
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>Week 1: Example</h1>
-      <p>We'll add our data to this table.</p>
+      <h1>D.C. Crime Statistics</h1>
+      <p>A comparison of crime in the District in 2015 vs. 2016</p>
     </div>
-    <table class="table">
+    <table class="table table-hover table-bordered"> <!--adds hovering and borders to table rows -->
       <thead>
-        <tr>
-          <th>Fruit</th>
-          <th>Price</th>
-          <th>Quantity</th>
+        <tr class="active">
+          <th>Offense</th>
+          <th>2015</th>
+          <th>2016</th>
+          <th>Percent Change</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Apples</td>
-          <td>$0.55</td>
+        <tr class="danger">
+          <td>Homicide</td>
+          <td>50</td>
+          <td>53</td>
+          <td>6%</td>
+        </tr>
+        <tr class="success">
+          <td>Sex Abuse</td>
+          <td>121</td>
+          <td>102</td>
+          <td>-16%</td>
+        </tr>
+        <tr class="danger">
+          <td>Assault w/ a Dangerous Weapon</td>
+          <td>921</td>
+          <td>972</td>
+          <td>6%</td>
+        </tr>
+        <tr class="danger">
+          <td>Robbery</td>
+          <td>1,198</td>
+          <td>1,299</td>
+          <td>8%</td>
+        </tr>
+        <tr class="danger">
+          <td>Violent Crime-Total</td>
+          <td>2,290</td>
+          <td>2,426</td>
+          <td>6%</td>
+        </tr>
+        <tr class="success">
+          <td>Burglary</td>
+          <td>909</td>
+          <td>846</td>
+          <td>-7%</td>
+        </tr>
+        <tr class="success">
+          <td>Motor Vehicle Theft</td>
+          <td>1,121</td>
+          <td>930</td>
+          <td>-17%</td>
+        </tr>
+        <tr class="success">
+          <td>Theft from Auto</td>
+          <td>4,353</td>
+          <td>4,156</td>
+          <td>-5%</td>
+        </tr>
+        <tr class="danger">
+          <td>Theft (Other)</td>
+          <td>5,155</td>
+          <td>5,272</td>
+          <td>2%</td>
+        </tr>
+        <tr class="success">
+          <td>Arson</td>
           <td>5</td>
+          <td>4</td>
+          <td>-20%</td>
         </tr>
-        <tr>
-          <td>Oranges</td>
-          <td>$0.80</td>
-          <td>10</td>
+        <tr class="success">
+          <td>Property Crime-Total</td>
+          <td>11,543</td>
+          <td>11,208</td>
+          <td>-3%</td>
         </tr>
-        <tr>
-          <td>Pears</td>
-          <td>$0.95</td>
-          <td>3</td>
+        <tr class="success">
+          <td>All Crime-Total</td>
+          <td>13,833</td>
+          <td>13,634</td>
+          <td>-1%</td>
         </tr>
       </tbody>
     </table>
