@@ -9,11 +9,13 @@
     .header {
       text-align: left;
       margin-top: 70px;
-
-
      
     }
 
+.bar {
+      height: 20px;
+      background: #F2998F;
+    }
   
 
    table {
@@ -82,9 +84,11 @@
       <thead>
         <tr>
           <th>Neighborhood</th>
+          <th>Average Family Income</th>
+          <th>Chart</th>
           <th>Child Population Change</th>
           <th>Poverty Rate</th>
-          <th>Average Family Income</th>
+          
         </tr>
       </thead>
       <tbody>
@@ -100,46 +104,136 @@
 </div>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
 <script>
-var dc_info = [{"num":1,"neighborhood":"Adams Morgan","child_pop_change_07-11":-20,"poverty_rate_2007-11":5.6,"avg_family_income_07-11":162891},
-{"num":2,"neighborhood":"Columbia Heights","child_pop_change_07-11":-32,"poverty_rate_2007-11":17,"avg_family_income_07-11":87204},
-{"num":3,"neighborhood":"Shaw","child_pop_change_07-11":-34,"poverty_rate_2007-11":17,"avg_family_income_07-11":101583},
-{"num":4,"neighborhood":"Georgetown","child_pop_change_07-11":46,"poverty_rate_2007-11":11,"avg_family_income_07-11":304995},
-{"num":5,"neighborhood":"Foggy Bottom","child_pop_change_07-11":62,"poverty_rate_2007-11":29,"avg_family_income_07-11":211064},
-{"num":6,"neighborhood":"DuPont Circle","child_pop_change_07-11":-24,"poverty_rate_2007-11":13,"avg_family_income_07-11":177893},
-{"num":7,"neighborhood":"Logan Circle","child_pop_change_07-11":-32,"poverty_rate_2007-11":12,"avg_family_income_07-11":123697},
-{"num":8,"neighborhood":"Downtown","child_pop_change_07-11":-23,"poverty_rate_2007-11":26,"avg_family_income_07-11":142881},
-{"num":9,"neighborhood":"Southwest","child_pop_change_07-11":-16,"poverty_rate_2007-11":19,"avg_family_income_07-11":94339},
-{"num":10,"neighborhood":"Chevy Chase","child_pop_change_07-11":17,"poverty_rate_2007-11":3.7,"avg_family_income_07-11":254541},
-{"num":11,"neighborhood":"Friendship Heights","child_pop_change_07-11":18,"poverty_rate_2007-11":5.8,"avg_family_income_07-11":215289},
-{"num":12,"neighborhood":"Van Ness","child_pop_change_07-11":-4.2,"poverty_rate_2007-11":8.7,"avg_family_income_07-11":217847},
-{"num":13,"neighborhood":"Palisades","child_pop_change_07-11":25,"poverty_rate_2007-11":8.3,"avg_family_income_07-11":297054},
-{"num":14,"neighborhood":"Glover Park","child_pop_change_07-11":10,"poverty_rate_2007-11":7.9,"avg_family_income_07-11":157349},
-{"num":15,"neighborhood":"Cleveland Park","child_pop_change_07-11":18,"poverty_rate_2007-11":8.9,"avg_family_income_07-11":291000},
-{"num":16,"neighborhood":"Shepherd Park","child_pop_change_07-11":-0.6,"poverty_rate_2007-11":3.8,"avg_family_income_07-11":180800},
-{"num":17,"neighborhood":"Takoma","child_pop_change_07-11":5.8,"poverty_rate_2007-11":13,"avg_family_income_07-11":81956},
-{"num":18,"neighborhood":"Petworth","child_pop_change_07-11":-9.3,"poverty_rate_2007-11":14,"avg_family_income_07-11":88437},
-{"num":19,"neighborhood":"Lamond Riggs","child_pop_change_07-11":12,"poverty_rate_2007-11":14,"avg_family_income_07-11":75912},
-{"num":20,"neighborhood":"Michigan Park","child_pop_change_07-11":-24,"poverty_rate_2007-11":11,"avg_family_income_07-11":87062},
-{"num":21,"neighborhood":"Edgewood","child_pop_change_07-11":-30,"poverty_rate_2007-11":17,"avg_family_income_07-11":91520},
-{"num":22,"neighborhood":"Brookland","child_pop_change_07-11":-16,"poverty_rate_2007-11":23,"avg_family_income_07-11":81931},
-{"num":23,"neighborhood":"Ivy City","child_pop_change_07-11":-13,"poverty_rate_2007-11":32,"avg_family_income_07-11":48388},
-{"num":24,"neighborhood":"Woodridge","child_pop_change_07-11":-7.5,"poverty_rate_2007-11":13,"avg_family_income_07-11":97305},
-{"num":25,"neighborhood":"Kingman Park","child_pop_change_07-11":-11,"poverty_rate_2007-11":14,"avg_family_income_07-11":129089},
-{"num":26,"neighborhood":"South Capitol Hill","child_pop_change_07-11":17,"poverty_rate_2007-11":6,"avg_family_income_07-11":186314},
-{"num":27,"neighborhood":"Navy Yard","child_pop_change_07-11":-51,"poverty_rate_2007-11":34,"avg_family_income_07-11":77952},
-{"num":28,"neighborhood":"Anacostia","child_pop_change_07-11":-11,"poverty_rate_2007-11":44,"avg_family_income_07-11":34195},
-{"num":29,"neighborhood":"Kenilworth","child_pop_change_07-11":-8.6,"poverty_rate_2007-11":41,"avg_family_income_07-11":42821},
-{"num":30,"neighborhood":"Mayfair","child_pop_change_07-11":-6,"poverty_rate_2007-11":32,"avg_family_income_07-11":37659},
-{"num":31,"neighborhood":"Deanwood","child_pop_change_07-11":-2.4,"poverty_rate_2007-11":34,"avg_family_income_07-11":51670},
-{"num":32,"neighborhood":"Fort DuPont","child_pop_change_07-11":-4,"poverty_rate_2007-11":24,"avg_family_income_07-11":57825},
-{"num":33,"neighborhood":"Capitol View","child_pop_change_07-11":-12,"poverty_rate_2007-11":22,"avg_family_income_07-11":53239},
-{"num":34,"neighborhood":"Fairlawn","child_pop_change_07-11":-11,"poverty_rate_2007-11":21,"avg_family_income_07-11":70274},
-{"num":35,"neighborhood":"Naylor Gardens","child_pop_change_07-11":-23,"poverty_rate_2007-11":17,"avg_family_income_07-11":72747},
-{"num":36,"neighborhood":"Garfield Heights","child_pop_change_07-11":-2,"poverty_rate_2007-11":45,"avg_family_income_07-11":45220},
-{"num":37,"neighborhood":"Barry Farm","child_pop_change_07-11":-20,"poverty_rate_2007-11":41,"avg_family_income_07-11":38015},
-{"num":38,"neighborhood":"Shipley Terrace","child_pop_change_07-11":-11,"poverty_rate_2007-11":38,"avg_family_income_07-11":38427},
-{"num":39,"neighborhood":"Bellevue","child_pop_change_07-11":-14,"poverty_rate_2007-11":36,"avg_family_income_07-11":41605}];
+var dc_info = [{"num":1,"neighborhood":"Adams Morgan","child_pop_change":-20,"poverty_rate":5.6,"avg_family_income":162891},
+{"num":2,"neighborhood":"Columbia Heights","child_pop_change":-32,"poverty_rate":17,"avg_family_income":87204},
+{"num":3,"neighborhood":"Shaw","child_pop_change":-34,"poverty_rate":17,"avg_family_income":101583},
+{"num":4,"neighborhood":"Georgetown","child_pop_change":46,"poverty_rate":11,"avg_family_income":304995},
+{"num":5,"neighborhood":"Foggy Bottom","child_pop_change":62,"poverty_rate":29,"avg_family_income":211064},
+{"num":6,"neighborhood":"DuPont Circle","child_pop_change":-24,"poverty_rate":13,"avg_family_income":177893},
+{"num":7,"neighborhood":"Logan Circle","child_pop_change":-32,"poverty_rate":12,"avg_family_income":123697},
+{"num":8,"neighborhood":"Downtown","child_pop_change":-23,"poverty_rate":26,"avg_family_income":142881},
+{"num":9,"neighborhood":"Southwest","child_pop_change":-16,"poverty_rate":19,"avg_family_income":94339},
+{"num":10,"neighborhood":"Chevy Chase","child_pop_change":17,"poverty_rate":3.7,"avg_family_income":254541},
+{"num":11,"neighborhood":"Friendship Heights","child_pop_change":18,"poverty_rate":5.8,"avg_family_income":215289},
+{"num":12,"neighborhood":"Van Ness","child_pop_change":-4.2,"poverty_rate":8.7,"avg_family_income":217847},
+{"num":13,"neighborhood":"Palisades","child_pop_change":25,"poverty_rate":8.3,"avg_family_income":297054},
+{"num":14,"neighborhood":"Glover Park","child_pop_change":10,"poverty_rate":7.9,"avg_family_income":157349},
+{"num":15,"neighborhood":"Cleveland Park","child_pop_change":18,"poverty_rate":8.9,"avg_family_income":291000},
+{"num":16,"neighborhood":"Shepherd Park","child_pop_change":-0.6,"poverty_rate":3.8,"avg_family_income":180800},
+{"num":17,"neighborhood":"Takoma","child_pop_change":5.8,"poverty_rate":13,"avg_family_income":81956},
+{"num":18,"neighborhood":"Petworth","child_pop_change":-9.3,"poverty_rate":14,"avg_family_income":88437},
+{"num":19,"neighborhood":"Lamond Riggs","child_pop_change":12,"poverty_rate":14,"avg_family_income":75912},
+{"num":20,"neighborhood":"Michigan Park","child_pop_change":-24,"poverty_rate":11,"avg_family_income":87062},
+{"num":21,"neighborhood":"Edgewood","child_pop_change":-30,"poverty_rate":17,"avg_family_income":91520},
+{"num":22,"neighborhood":"Brookland","child_pop_change":-16,"poverty_rate":23,"avg_family_income":81931},
+{"num":23,"neighborhood":"Ivy City","child_pop_change":-13,"poverty_rate":32,"avg_family_income":48388},
+{"num":24,"neighborhood":"Woodridge","child_pop_change":-7.5,"poverty_rate":13,"avg_family_income":97305},
+{"num":25,"neighborhood":"Kingman Park","child_pop_change":-11,"poverty_rate":14,"avg_family_income":129089},
+{"num":26,"neighborhood":"South Capitol Hill","child_pop_change":17,"poverty_rate":6,"avg_family_income":186314},
+{"num":27,"neighborhood":"Navy Yard","child_pop_change":-51,"poverty_rate":34,"avg_family_income":77952},
+{"num":28,"neighborhood":"Anacostia","child_pop_change":-11,"poverty_rate":44,"avg_family_income":34195},
+{"num":29,"neighborhood":"Kenilworth","child_pop_change":-8.6,"poverty_rate":41,"avg_family_income":42821},
+{"num":30,"neighborhood":"Mayfair","child_pop_change":-6,"poverty_rate":32,"avg_family_income":37659},
+{"num":31,"neighborhood":"Deanwood","child_pop_change":-2.4,"poverty_rate":34,"avg_family_income":51670},
+{"num":32,"neighborhood":"Fort DuPont","child_pop_change":-4,"poverty_rate":24,"avg_family_income":57825},
+{"num":33,"neighborhood":"Capitol View","child_pop_change":-12,"poverty_rate":22,"avg_family_income":53239},
+{"num":34,"neighborhood":"Fairlawn","child_pop_change":-11,"poverty_rate":21,"avg_family_income":70274},
+{"num":35,"neighborhood":"Naylor Gardens","child_pop_change":-23,"poverty_rate":17,"avg_family_income":72747},
+{"num":36,"neighborhood":"Garfield Heights","child_pop_change":-2,"poverty_rate":45,"avg_family_income":45220},
+{"num":37,"neighborhood":"Barry Farm","child_pop_change":-20,"poverty_rate":41,"avg_family_income":38015},
+{"num":38,"neighborhood":"Shipley Terrace","child_pop_change":-11,"poverty_rate":38,"avg_family_income":38427},
+{"num":39,"neighborhood":"Bellevue","child_pop_change":-14,"poverty_rate":36,"avg_family_income":41605},
+{"num":null,"neighborhood":"","child_pop_change":null,"poverty_rate":null,"avg_family_income":null}];
+
+var MAX_INCOME = 304995;
+
+var options = {
+  sorted: false,
+  filtered: false,
+  page:0
+};
+
+//Sort by neighborhood name
+
+function compareStrings (a,b) {
+  a = a.toLowerCase();
+  b = b.toLowerCase();
+  return (a < b) ? -1 : (a > b) ? 1: 0;
+}
+dc_info.sort(function (a, b) {
+  return compareStrings(a.neighborhood, b.neighborhood);
+})
 
 
+function updateTable() {
+  var data = dc_info.slice()
+ if (options.sorted) {
+    if (options.sorted === 'asc') {
+      data.sort(function (a, b) { return a.neighborhood - b.neighborhood; });
+    } 
+  }
+
+
+
+
+//Filter
+
+
+//Pagination
+
+
+  var table = document.getElementById('data-table');
+  var tbody = table.getElementsByTagName('tbody')[0];
+
+  tbody.innerHTML = '';
+
+  data.forEach(function (d) {
+
+    var row = document.createElement('tr');
+
+    var name = document.createElement('td');
+    name.innerHTML = d.neighborhood;
+    row.appendChild(name);
+
+    var income= document.createElement('td');
+    income.innerHTML = d.avg_family_income;
+    row.appendChild(income);
+
+    var barWrapper = document.createElement('td');
+    var bar = document.createElement('div');
+    bar.setAttribute('class', 'bar');
+    bar.setAttribute('style', 'width: ' + (d.avg_family_income / MAX_INCOME * 100) + '%;');
+    barWrapper.appendChild(bar);
+    row.appendChild(barWrapper);
+
+    var child= document.createElement('td');
+    child.innerHTML = d.child_pop_change;
+    row.appendChild(child);
+
+    var poverty= document.createElement('td');
+    poverty.innerHTML = d.poverty_rate;
+    row.appendChild(poverty);
+
+
+    tbody.appendChild(row);
+  });
+}
+
+
+updateTable();
+
+
+/*
+document.getElementById('sort-asc').addEventListener('click', function() {
+  if (options.sorted === 'asc') {
+    options.sorted = false;
+  } else {
+    options.sorted = 'asc';
+  }
+  updateTable();
+});
+*/
+
+</script>
 </body>
 </html>
