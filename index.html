@@ -5,11 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Week 1: HTML Tables</title><!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
   <style>
     .header {
       text-align: left;
       margin-top: 70px;
      
+    }
+
+    .income {
+      font-color: #F2998F;
     }
 
 .bar {
@@ -37,7 +42,16 @@
     }
     img {margin: 50px 50px;}
   
-  
+    h2 {
+      font-family: "Calibri";
+      font-size: 20px;
+      
+    }
+
+    .table-hover tbody tr:hover td {
+      background-color: #5a5858;
+    
+    }
 
     
 
@@ -66,15 +80,19 @@
 
 
     <div class="btn-group" role="group" aria-label="Sort">
-      <button type="button" class="btn btn-default" id="sort-desc">Child Population Change</button>
-      <button type="button" class="btn btn-default" id="sort-desc">Poverty Rate</button>
-       <button type="button" class="btn btn-default" id="sort-desc">Average Family Income</button>
+      <div class = "col-sm-12">
+        <h2>sort:</h2> 
+        <button type="button" class="btn btn-default" id="sort-desc-poverty">Poverty Rate</button>
+         <button type="button" class="btn btn-default" id="sort-desc-income">Average Family Income</button>
+       </div>
     </div>
 
     <div class="btn-group" role="group" aria-label="Filter">
-      <button type="button" class="btn btn-default" id="filter-es">Decrease in Child Population</button>
-      <button type="button" class="btn btn-default" id="filter-ms">Poverty Rate>20%</button>
-      <button type="button" class="btn btn-default" id="filter-hs">6-figure income</button>
+      <div class = "col-sm-12">
+        <h2>filter:</h2> 
+        <button type="button" class="btn btn-default" id="filter-ms">Poverty Rate>20%</button>
+        <button type="button" class="btn btn-default" id="filter-hs">6-figure income</button>
+      </div>
     </div>
   </div>
 </div>
@@ -84,10 +102,11 @@
       <thead>
         <tr>
           <th>Neighborhood</th>
-          <th>Average Family Income</th>
-          <th>Chart</th>
-          <th>Child Population Change</th>
-          <th>Poverty Rate</th>
+          <th class = "col-sm-2">Average Family Income</th>
+          <th class = "col-sm-3"></th>
+          <th class = "col-sm-2">Poverty Rate</th>
+          <th class = "col-sm-2"></th>
+          
           
         </tr>
       </thead>
@@ -104,48 +123,48 @@
 </div>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
 <script>
-var dc_info = [{"num":1,"neighborhood":"Adams Morgan","child_pop_change":-20,"poverty_rate":5.6,"avg_family_income":162891},
-{"num":2,"neighborhood":"Columbia Heights","child_pop_change":-32,"poverty_rate":17,"avg_family_income":87204},
-{"num":3,"neighborhood":"Shaw","child_pop_change":-34,"poverty_rate":17,"avg_family_income":101583},
-{"num":4,"neighborhood":"Georgetown","child_pop_change":46,"poverty_rate":11,"avg_family_income":304995},
-{"num":5,"neighborhood":"Foggy Bottom","child_pop_change":62,"poverty_rate":29,"avg_family_income":211064},
-{"num":6,"neighborhood":"DuPont Circle","child_pop_change":-24,"poverty_rate":13,"avg_family_income":177893},
-{"num":7,"neighborhood":"Logan Circle","child_pop_change":-32,"poverty_rate":12,"avg_family_income":123697},
-{"num":8,"neighborhood":"Downtown","child_pop_change":-23,"poverty_rate":26,"avg_family_income":142881},
-{"num":9,"neighborhood":"Southwest","child_pop_change":-16,"poverty_rate":19,"avg_family_income":94339},
-{"num":10,"neighborhood":"Chevy Chase","child_pop_change":17,"poverty_rate":3.7,"avg_family_income":254541},
-{"num":11,"neighborhood":"Friendship Heights","child_pop_change":18,"poverty_rate":5.8,"avg_family_income":215289},
-{"num":12,"neighborhood":"Van Ness","child_pop_change":-4.2,"poverty_rate":8.7,"avg_family_income":217847},
-{"num":13,"neighborhood":"Palisades","child_pop_change":25,"poverty_rate":8.3,"avg_family_income":297054},
-{"num":14,"neighborhood":"Glover Park","child_pop_change":10,"poverty_rate":7.9,"avg_family_income":157349},
-{"num":15,"neighborhood":"Cleveland Park","child_pop_change":18,"poverty_rate":8.9,"avg_family_income":291000},
-{"num":16,"neighborhood":"Shepherd Park","child_pop_change":-0.6,"poverty_rate":3.8,"avg_family_income":180800},
-{"num":17,"neighborhood":"Takoma","child_pop_change":5.8,"poverty_rate":13,"avg_family_income":81956},
-{"num":18,"neighborhood":"Petworth","child_pop_change":-9.3,"poverty_rate":14,"avg_family_income":88437},
-{"num":19,"neighborhood":"Lamond Riggs","child_pop_change":12,"poverty_rate":14,"avg_family_income":75912},
-{"num":20,"neighborhood":"Michigan Park","child_pop_change":-24,"poverty_rate":11,"avg_family_income":87062},
-{"num":21,"neighborhood":"Edgewood","child_pop_change":-30,"poverty_rate":17,"avg_family_income":91520},
-{"num":22,"neighborhood":"Brookland","child_pop_change":-16,"poverty_rate":23,"avg_family_income":81931},
-{"num":23,"neighborhood":"Ivy City","child_pop_change":-13,"poverty_rate":32,"avg_family_income":48388},
-{"num":24,"neighborhood":"Woodridge","child_pop_change":-7.5,"poverty_rate":13,"avg_family_income":97305},
-{"num":25,"neighborhood":"Kingman Park","child_pop_change":-11,"poverty_rate":14,"avg_family_income":129089},
-{"num":26,"neighborhood":"South Capitol Hill","child_pop_change":17,"poverty_rate":6,"avg_family_income":186314},
-{"num":27,"neighborhood":"Navy Yard","child_pop_change":-51,"poverty_rate":34,"avg_family_income":77952},
-{"num":28,"neighborhood":"Anacostia","child_pop_change":-11,"poverty_rate":44,"avg_family_income":34195},
-{"num":29,"neighborhood":"Kenilworth","child_pop_change":-8.6,"poverty_rate":41,"avg_family_income":42821},
-{"num":30,"neighborhood":"Mayfair","child_pop_change":-6,"poverty_rate":32,"avg_family_income":37659},
-{"num":31,"neighborhood":"Deanwood","child_pop_change":-2.4,"poverty_rate":34,"avg_family_income":51670},
-{"num":32,"neighborhood":"Fort DuPont","child_pop_change":-4,"poverty_rate":24,"avg_family_income":57825},
-{"num":33,"neighborhood":"Capitol View","child_pop_change":-12,"poverty_rate":22,"avg_family_income":53239},
-{"num":34,"neighborhood":"Fairlawn","child_pop_change":-11,"poverty_rate":21,"avg_family_income":70274},
-{"num":35,"neighborhood":"Naylor Gardens","child_pop_change":-23,"poverty_rate":17,"avg_family_income":72747},
-{"num":36,"neighborhood":"Garfield Heights","child_pop_change":-2,"poverty_rate":45,"avg_family_income":45220},
-{"num":37,"neighborhood":"Barry Farm","child_pop_change":-20,"poverty_rate":41,"avg_family_income":38015},
-{"num":38,"neighborhood":"Shipley Terrace","child_pop_change":-11,"poverty_rate":38,"avg_family_income":38427},
-{"num":39,"neighborhood":"Bellevue","child_pop_change":-14,"poverty_rate":36,"avg_family_income":41605},
-{"num":null,"neighborhood":"","child_pop_change":null,"poverty_rate":null,"avg_family_income":null}];
+var dc_info = [{"num":5,"neighborhood":"Foggy Bottom","poverty_rate":29,"avg_family_income":211064},
+{"num":4,"neighborhood":"Georgetown","poverty_rate":11,"avg_family_income":304995},
+{"num":13,"neighborhood":"Palisades","poverty_rate":8.3,"avg_family_income":297054},
+{"num":11,"neighborhood":"Friendship Heights","poverty_rate":5.8,"avg_family_income":215289},
+{"num":15,"neighborhood":"Cleveland Park","poverty_rate":8.9,"avg_family_income":291000},
+{"num":10,"neighborhood":"Chevy Chase","poverty_rate":3.7,"avg_family_income":254541},
+{"num":26,"neighborhood":"South Capitol Hill","poverty_rate":6,"avg_family_income":186314},
+{"num":19,"neighborhood":"Lamond Riggs","poverty_rate":14,"avg_family_income":75912},
+{"num":14,"neighborhood":"Glover Park","poverty_rate":7.9,"avg_family_income":157349},
+{"num":17,"neighborhood":"Takoma","poverty_rate":13,"avg_family_income":81956},
+{"num":16,"neighborhood":"Shepherd Park","poverty_rate":3.8,"avg_family_income":180800},
+{"num":36,"neighborhood":"Garfield Heights","poverty_rate":45,"avg_family_income":45220},
+{"num":31,"neighborhood":"Deanwood","poverty_rate":34,"avg_family_income":51670},
+{"num":32,"neighborhood":"Fort DuPont","poverty_rate":24,"avg_family_income":57825},
+{"num":12,"neighborhood":"Van Ness","poverty_rate":8.7,"avg_family_income":217847},
+{"num":30,"neighborhood":"Mayfair","poverty_rate":32,"avg_family_income":37659},
+{"num":24,"neighborhood":"Woodridge","poverty_rate":13,"avg_family_income":97305},
+{"num":29,"neighborhood":"Kenilworth","poverty_rate":41,"avg_family_income":42821},
+{"num":18,"neighborhood":"Petworth","poverty_rate":14,"avg_family_income":88437},
+{"num":25,"neighborhood":"Kingman Park","poverty_rate":14,"avg_family_income":129089},
+{"num":28,"neighborhood":"Anacostia","poverty_rate":44,"avg_family_income":34195},
+{"num":34,"neighborhood":"Fairlawn","poverty_rate":21,"avg_family_income":70274},
+{"num":38,"neighborhood":"Shipley Terrace","poverty_rate":38,"avg_family_income":38427},
+{"num":33,"neighborhood":"Capitol View","poverty_rate":22,"avg_family_income":53239},
+{"num":23,"neighborhood":"Ivy City","poverty_rate":32,"avg_family_income":48388},
+{"num":39,"neighborhood":"Bellevue","poverty_rate":36,"avg_family_income":41605},
+{"num":9,"neighborhood":"Southwest","poverty_rate":19,"avg_family_income":94339},
+{"num":22,"neighborhood":"Brookland","poverty_rate":23,"avg_family_income":81931},
+{"num":1,"neighborhood":"Adams Morgan","poverty_rate":5.6,"avg_family_income":162891},
+{"num":37,"neighborhood":"Barry Farm","poverty_rate":41,"avg_family_income":38015},
+{"num":8,"neighborhood":"Downtown","poverty_rate":26,"avg_family_income":142881},
+{"num":35,"neighborhood":"Naylor Gardens","poverty_rate":17,"avg_family_income":72747},
+{"num":6,"neighborhood":"DuPont Circle","poverty_rate":13,"avg_family_income":177893},
+{"num":20,"neighborhood":"Michigan Park","poverty_rate":11,"avg_family_income":87062},
+{"num":21,"neighborhood":"Edgewood","poverty_rate":17,"avg_family_income":91520},
+{"num":2,"neighborhood":"Columbia Heights","poverty_rate":17,"avg_family_income":87204},
+{"num":7,"neighborhood":"Logan Circle","poverty_rate":12,"avg_family_income":123697},
+{"num":3,"neighborhood":"Shaw","poverty_rate":17,"avg_family_income":101583},
+{"num":27,"neighborhood":"Navy Yard","poverty_rate":34,"avg_family_income":77952}];
 
 var MAX_INCOME = 304995;
+var MAX_POVERTY = 45;
 
 var options = {
   sorted: false,
@@ -162,16 +181,18 @@ function compareStrings (a,b) {
 }
 dc_info.sort(function (a, b) {
   return compareStrings(a.neighborhood, b.neighborhood);
-})
+});
 
 
 function updateTable() {
   var data = dc_info.slice()
  if (options.sorted) {
-    if (options.sorted === 'asc') {
-      data.sort(function (a, b) { return a.neighborhood - b.neighborhood; });
-    } 
+    if (options.sorted === 'desc') {
+      data.sort(function (a, b) { return b.avg_family_income - a.avg_family_income; });
+    } else if (options.sorted === 'desc-poverty') {
+      data.sort(function (a, b) { return b.poverty_rate - a.poverty_rate; });
   }
+}
 
 
 
@@ -206,13 +227,17 @@ function updateTable() {
     barWrapper.appendChild(bar);
     row.appendChild(barWrapper);
 
-    var child= document.createElement('td');
-    child.innerHTML = d.child_pop_change;
-    row.appendChild(child);
-
     var poverty= document.createElement('td');
     poverty.innerHTML = d.poverty_rate;
     row.appendChild(poverty);
+
+    var barWrapper = document.createElement('td');
+    var bar = document.createElement('div');
+    bar.setAttribute('class', 'bar');
+    bar.setAttribute('style', 'width: ' + (d.poverty_rate / MAX_POVERTY * 100) + '%;');
+    barWrapper.appendChild(bar);
+    row.appendChild(barWrapper);
+
 
 
     tbody.appendChild(row);
@@ -223,16 +248,25 @@ function updateTable() {
 updateTable();
 
 
-/*
-document.getElementById('sort-asc').addEventListener('click', function() {
-  if (options.sorted === 'asc') {
+
+document.getElementById('sort-desc-income').addEventListener('click', function() {
+  if (options.sorted === 'desc') {
     options.sorted = false;
   } else {
-    options.sorted = 'asc';
+    options.sorted = 'desc';
   }
   updateTable();
 });
-*/
+
+document.getElementById('sort-desc-poverty').addEventListener('click', function() {
+  if (options.sorted === 'desc-poverty') {
+    options.sorted = false;
+  } else {
+    options.sorted = 'desc-poverty';
+  }
+  updateTable();
+});
+
 
 </script>
 </body>
