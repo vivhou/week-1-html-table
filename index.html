@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Week 1: HTML Tables</title><!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato">
 
   <style>
     .header {
@@ -32,18 +33,18 @@
     body {
       background: #357C8D;
       color: #ffffff;
-      font-family: "Century Gothic";
+      font-family: "Lato";
 
     }
 
     h1 {
-      font-family: "Century Gothic";
+      font-family: "Lato";
       font-size: 30px;
     }
     img {margin: 50px 50px;}
   
     h2 {
-      font-family: "Calibri";
+      font-family: "Lato";
       font-size: 20px;
       
     }
@@ -51,6 +52,11 @@
     .table-hover tbody tr:hover td {
       background-color: #5a5858;
     
+    }
+
+    a {
+      color: #ffffff;
+
     }
 
     
@@ -62,9 +68,21 @@
     <div class="header">
       <div class = "col-sm-6">
         <h1>A Glance at D.C. Neighborhoods</h1>
-        <p>Washington D.C.has changed rapidly in the past decade, with more young professionals moving in certain parts of the District. Here's a look at how young professionals are taking over the District within each neighborhood.</p>
-      </div>
-      <div class = "col-sm-1">
+        <br />
+        <p>Washington D.C.has changed rapidly in the past decade, with more young professionals moving in certain parts of the District. Using data from <a href="http://www.neighborhoodinfodc.org" target="_blank"><u><b>Neighborhood Info DC</b></u></a>, we can examine exactly how average family income and poverty rates vary among neighborhoods within the District.</p>
+        <div class="controls section">
+          <div class="btn-group" role="group" aria-label="Sort">
+            <h2>sort:</h2> 
+            <button type="button" class="btn btn-default" id="sort-desc-poverty">Poverty Rate</button>
+            <button type="button" class="btn btn-default" id="sort-desc-income">Average Family Income</button>   
+          </div>
+
+          <div class="btn-group" role="group" aria-label="Filter">
+            <h2>filter:</h2> 
+            <button type="button" class="btn btn-default" id="filter-poverty">Poverty Rate>20%</button>
+            <button type="button" class="btn btn-default" id="filter-income">6-figure income</button> 
+          </div>
+        </div>
       </div>
       <div class = "col-sm-5">
         <img src = "map_washington-dc.gif" alt="D.C. neighborhood map" style="width: 300px; height: 330px;">
@@ -72,30 +90,9 @@
     </div>
   </div>
   
-<!--Add buttons -->
-
-<div class="controls section">
-
-  <div class="container">
 
 
-    <div class="btn-group" role="group" aria-label="Sort">
-      <div class = "col-sm-12">
-        <h2>sort:</h2> 
-        <button type="button" class="btn btn-default" id="sort-desc-poverty">Poverty Rate</button>
-         <button type="button" class="btn btn-default" id="sort-desc-income">Average Family Income</button>
-       </div>
-    </div>
 
-    <div class="btn-group" role="group" aria-label="Filter">
-      <div class = "col-sm-12">
-        <h2>filter:</h2> 
-        <button type="button" class="btn btn-default" id="filter-ms">Poverty Rate>20%</button>
-        <button type="button" class="btn btn-default" id="filter-hs">6-figure income</button>
-      </div>
-    </div>
-  </div>
-</div>
 <div class = "main section">
   <div class = "container">
     <table class="table table-hover" id = "data-table"> 
@@ -172,7 +169,7 @@ var options = {
   page:0
 };
 
-//Sort by neighborhood name
+//Sort by neighborhood name and poverty rate in descending order
 
 function compareStrings (a,b) {
   a = a.toLowerCase();
@@ -183,22 +180,40 @@ dc_info.sort(function (a, b) {
   return compareStrings(a.neighborhood, b.neighborhood);
 });
 
+//Sort by income and poverty rate
 
 function updateTable() {
+  console.log("UpdateTable " + options.filtered)
   var data = dc_info.slice()
  if (options.sorted) {
     if (options.sorted === 'desc') {
       data.sort(function (a, b) { return b.avg_family_income - a.avg_family_income; });
     } else if (options.sorted === 'desc-poverty') {
       data.sort(function (a, b) { return b.poverty_rate - a.poverty_rate; });
-  }
+    }
+ }
+
+
+//Filter by Poverty>20%
+if (options.filtered) {
+     if (options.filtered === 'filter-p') {
+        data = data.filter(function (a) { 
+          return a.poverty_rate > 20; });
+      }
+}
+//Filter by 6 figure income
+if (options.filtered) {
+    if (options.filtered === 'filter-i'){
+      data = data.filter(function (a) {
+        return a.avg_family_income > 99999; });
+    }
 }
 
+  
 
 
 
-//Filter
-
+  
 
 //Pagination
 
@@ -263,6 +278,24 @@ document.getElementById('sort-desc-poverty').addEventListener('click', function(
     options.sorted = false;
   } else {
     options.sorted = 'desc-poverty';
+  }
+  updateTable();
+});
+
+document.getElementById('filter-poverty').addEventListener('click', function() {
+  if (options.filtered === 'filter-p') {
+    options.filtered = false;
+  } else {
+    options.filtered = 'filter-p';
+  }
+  updateTable();
+});
+
+document.getElementById('filter-income').addEventListener('click', function() {
+  if (options.filtered === 'filter-i') {
+    options.filtered = false;
+  } else {
+    options.filtered = 'filter-i';
   }
   updateTable();
 });
