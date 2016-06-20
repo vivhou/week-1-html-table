@@ -44,18 +44,17 @@
     body {
       background: #357C8D;
       color: #ffffff;
-      font-family: "Lato";
+      font-family: "Lato", sans-serif;
 
     }
 
     h1 {
-      font-family: "Lato";
       font-size: 30px;
+      margin-bottom: 20px;
     }
     img {margin: 50px 50px;}
   
     h2 {
-      font-family: "Lato";
       font-size: 20px;
       
     }
@@ -88,6 +87,10 @@
     background-color: #5a5858;
     border-color: #ffffff; 
     }
+
+    img {
+      max-width: 100%;
+    }
  
    
 
@@ -101,22 +104,20 @@
         <br />
         <p>Washington D.C.has changed rapidly in the past decade, with more young professionals moving in certain parts of the District. Using data from <a href="http://www.neighborhoodinfodc.org" target="_blank"><u><b>Neighborhood Info DC</b></u></a>, we can examine exactly how average family income and poverty rates vary among neighborhoods within the District.</p>
         <div class="controls section">
+          <h2>filter:</h2>
           <div class="btn-group" role="group" aria-label="Sort">
-            <h2>filter:</h2> 
             <button type="button" class="btn btn-primary outline" id="filter-poverty">Poverty Rate>20%</button> 
             <button type="button" class="btn btn-primary outline" id="filter-income">6-figure income</button>  
           </div>
-          <br />
-
+          <h2>sort:</h2> 
           <div class="btn-group" role="group" aria-label="Filter">
-            <h2>sort:</h2> 
             <button type="button" class="btn btn-primary outline" id="sort-desc-poverty">Poverty Rate</button>
             <button type="button" class="btn btn-primary outline" id="sort-desc-income">Average Family Income</button>    
           </div>
         </div>
       </div>
       <div class = "col-sm-5">
-        <img src = "map_washington-dc.gif" alt="D.C. neighborhood map" style="width: 300px; height: 330px;">
+        <img src = "map_washington-dc.gif" alt="D.C. neighborhood map" width= "300" height= "330">
       </div>
     </div>
   </div>
@@ -233,14 +234,14 @@ function updateTable() {
 
 //Filter by Poverty>20%
   if (options.filtered) {
-     if (options.filtered === 'filter-p') {
+     if (options.filtered === 'high-poverty') {
         data = data.filter(function (a) { 
           return a.poverty_rate > 20; });
       }
 }
 //Filter by 6 figure income
   if (options.filtered) {
-    if (options.filtered === 'filter-i'){
+    if (options.filtered === '6-figure-income'){
       data = data.filter(function (a) {
         return a.avg_family_income > 99999; });
     }
@@ -337,19 +338,19 @@ document.getElementById('sort-desc-poverty').addEventListener('click', function(
 });
 
 document.getElementById('filter-poverty').addEventListener('click', function() {
-  if (options.filtered === 'filter-p') {
+  if (options.filtered === 'high-poverty') {
     options.filtered = false;
   } else {
-    options.filtered = 'filter-p';
+    options.filtered = 'high-poverty';
   }
   updateTable();
 });
 
 document.getElementById('filter-income').addEventListener('click', function() {
-  if (options.filtered === 'filter-i') {
+  if (options.filtered === '6-figure-income') {
     options.filtered = false;
   } else {
-    options.filtered = 'filter-i';
+    options.filtered = '6-figure-income';
   }
   updateTable();
 });
