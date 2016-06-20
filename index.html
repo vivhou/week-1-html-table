@@ -192,6 +192,8 @@ var dc_info = [{"num":5,"neighborhood":"Foggy Bottom","poverty_rate":29,"avg_fam
 {"num":3,"neighborhood":"Shaw","poverty_rate":17,"avg_family_income":101583},
 {"num":27,"neighborhood":"Navy Yard","poverty_rate":34,"avg_family_income":77952}];
 
+
+
 var MAX_INCOME = 304995;
 var MAX_POVERTY = 45;
 
@@ -207,10 +209,24 @@ var tbody = d3.select("tbody");
 function updateTable(){
   tbody.html("");
 
-  var rows = tbody.selectAll("tr")
+  //Alphabetize table by neighborhood name
+
+
+function compareStrings (a,b) {
+  a = a.toLowerCase();
+  b = b.toLowerCase();
+  return (a < b) ? -1 : (a > b) ? 1: 0;
+} 
+
+
+
+ var rows = tbody.selectAll("tr")
     .data(dc_info)
     .enter()
-    .append("tr");
+    .append("tr")
+    .sort(function (a,b) { return compareStrings(a.neighborhood, b.neighborhood);
+    }); 
+
 
   rows.append("td")
     .html(function(d) { return d.neighborhood});
@@ -229,18 +245,40 @@ function updateTable(){
   rows.append("td")
     .append("div")
     .classed("bar", true)
-  .style("width", function(d) { return ((d.poverty_rate / MAX_POVERTY) * 100 + '%')})
+    .style("width", function(d) { return ((d.poverty_rate / MAX_POVERTY) * 100 + '%')})
 
+
+/*
+  dc_info.select("#sort-desc-income")
+    .data(dc_info)
+    .on("click", function(){
+    rows.sort(function(a, b) { return b.avg_family_income - a.avg_family_income; });
+    });
+    */
 };
+
 
 updateTable();
 
 
 d3.select("#sort-desc-income")
-  .on("click", function() {
+  .on("click", function(){
+    sortTable();
     d3.select('#sort-desc-income').classed('active', true);
     d3.select('#sort-desc-poverty').classed('active', false);
   });
+
+  var sortTable = function(a,b) {
+    d3.selectAll("tbody")
+    .data(dc_info)
+    .sort(function (a,b) { return b.avg_family_income - a.avg_family_income; });
+
+  };
+
+
+
+
+
 
 
 //Sort by neighborhood name and poverty rate in descending order
