@@ -105,12 +105,12 @@
         <p>Washington D.C.has changed rapidly in the past decade, with more young professionals moving in certain parts of the District. Using data from <a href="http://www.neighborhoodinfodc.org" target="_blank"><u><b>Neighborhood Info DC</b></u></a>, we can examine exactly how average family income and poverty rates vary among neighborhoods within the District.</p>
         <div class="controls section">
           <h2>filter:</h2>
-          <div class="btn-group" role="group" aria-label="Sort">
+          <div class="btn-group" role="group" aria-label="Filter">
             <button type="button" class="btn btn-primary outline" id="filter-poverty">Poverty Rate>20%</button> 
             <button type="button" class="btn btn-primary outline" id="filter-income">6-figure income</button>  
           </div>
           <h2>sort:</h2> 
-          <div class="btn-group" role="group" aria-label="Filter">
+          <div class="btn-group" role="group" aria-label="Sort">
             <button type="button" class="btn btn-primary outline" id="sort-desc-poverty">Poverty Rate</button>
             <button type="button" class="btn btn-primary outline" id="sort-desc-income">Average Family Income</button>    
           </div>
@@ -201,21 +201,51 @@ var options = {
   page:0
 };
 
+var tbody = d3.select("tbody");
 
 
+function updateTable(){
+  tbody.html("");
 
-function getNumberOfPages() {
-  return Math.ceil(dc_info.length/numberPerPage);
-}
+  var rows = tbody.selectAll("tr")
+    .data(dc_info)
+    .enter()
+    .append("tr");
 
-function nextPage() {
-  currentPage += 1;
-  updateTable();
-}
+  rows.append("td")
+    .html(function(d) { return d.neighborhood});
+
+  rows.append("td")
+    .html(function(d) { return d.avg_family_income});
+
+  rows.append("td")
+    .append("div")
+    .classed("bar", true)
+    .style("width", function(d) { return ((d.avg_family_income / MAX_INCOME) * 100 + '%')});
+
+  rows.append("td")
+    .html(function(d) { return d.poverty_rate});
+
+  rows.append("td")
+    .append("div")
+    .classed("bar", true)
+  .style("width", function(d) { return ((d.poverty_rate / MAX_POVERTY) * 100 + '%')})
+
+};
+
+updateTable();
+
+
+d3.select("#sort-desc-income")
+  .on("click", function() {
+    d3.select('#sort-desc-income').classed('active', true);
+    d3.select('#sort-desc-poverty').classed('active', false);
+  });
+
 
 //Sort by neighborhood name and poverty rate in descending order
 
-function compareStrings (a,b) {
+/*function compareStrings (a,b) {
   a = a.toLowerCase();
   b = b.toLowerCase();
   return (a < b) ? -1 : (a > b) ? 1: 0;
@@ -273,49 +303,7 @@ if (options.sorted) {
     }
   } 
 
-  var table = document.getElementById('data-table');
-  var tbody = table.getElementsByTagName('tbody')[0];
-
-  tbody.innerHTML = '';
-
-  data.forEach(function (d) {
-
-    var row = document.createElement('tr');
-
-    var name = document.createElement('td');
-    name.innerHTML = d.neighborhood;
-    row.appendChild(name);
-
-    var income= document.createElement('td');
-    income.innerHTML = '$' + new Intl.NumberFormat().format(d.avg_family_income);
-    row.appendChild(income);
-
-    var barWrapper = document.createElement('td');
-    var bar = document.createElement('div');
-    bar.setAttribute('class', 'bar');
-    bar.setAttribute('style', 'width: ' + (d.avg_family_income / MAX_INCOME * 100) + '%;');
-    barWrapper.appendChild(bar);
-    row.appendChild(barWrapper);
-
-    var poverty= document.createElement('td');
-    poverty.innerHTML = d.poverty_rate + '%';
-    row.appendChild(poverty);
-
-    var barWrapper = document.createElement('td');
-    var bar = document.createElement('div');
-    bar.setAttribute('class', 'bar');
-    bar.setAttribute('style', 'width: ' + (d.poverty_rate / MAX_POVERTY * 100) + '%;');
-    barWrapper.appendChild(bar);
-    row.appendChild(barWrapper);
-
-
-
-    tbody.appendChild(row);
-  });
-}
-
-updateTable();
-
+  
   
 
 
@@ -363,6 +351,7 @@ document.getElementById('page-next').addEventListener('click', function() {
   }
   updateTable();
 });
+*/
 
 </script>
 </body>
