@@ -72,7 +72,7 @@
     .btn.outline {
       background: none;
       padding: 6px 6px;
-      margin: 8px 8px;
+      margin: 6px 12px;
 
     }
 
@@ -107,17 +107,25 @@
           <h2>filter:</h2>
           <div class="btn-group" role="group" aria-label="Filter">
             <button type="button" class="btn btn-primary outline" id="filter-poverty">Poverty Rate>20%</button> 
-            <button type="button" class="btn btn-primary outline" id="filter-income">6-figure income</button>  
+            <button type="button" class="btn btn-primary outline" id="filter-income">6-figure income</button> 
           </div>
           <h2>sort:</h2> 
           <div class="btn-group" role="group" aria-label="Sort">
             <button type="button" class="btn btn-primary outline" id="sort-desc-poverty">Poverty Rate</button>
             <button type="button" class="btn btn-primary outline" id="sort-desc-income">Average Family Income</button>    
           </div>
+          <h2></h2>
+          <div class="btn-group" role="group" aria-label="">
+          <button type="button" class="btn btn-primary outline" id="reset-button">Reset</button>  
+          </div>
+     
+
         </div>
       </div>
+        
       <div class = "col-sm-5">
         <img src = "map_washington-dc.gif" alt="D.C. neighborhood map" width= "300" height= "330">
+
       </div>
     </div>
   </div>
@@ -224,8 +232,11 @@ function compareStrings (a,b) {
     .data(dc_info)
     .enter()
     .append("tr")
-    .sort(function (a,b) { return compareStrings(a.neighborhood, b.neighborhood);
-    }); 
+    .sort(function (a,b) { 
+     return compareStrings(a.neighborhood, b.neighborhood);
+   });
+     
+
 
 
   rows.append("td")
@@ -248,6 +259,7 @@ function compareStrings (a,b) {
     .style("width", function(d) { return ((d.poverty_rate / MAX_POVERTY) * 100 + '%')})
 
 
+
 /*
   dc_info.select("#sort-desc-income")
     .data(dc_info)
@@ -261,19 +273,71 @@ function compareStrings (a,b) {
 updateTable();
 
 
+
+d3.select("#reset-button")
+  .on("click", function() {
+    updateTable()
+    d3.select('#sort-desc-income').classed('active', true);
+    d3.select('#sort-desc-poverty').classed('active', false);
+    d3.select('#filter-poverty').classed('active', false);
+    d3.select('#filter-income').classed('active', false);
+  })
+  
+
 d3.select("#sort-desc-income")
+  .on("click", function() {
+    tbody.selectAll("tr").sort(function(a, b) {
+      return d3.descending(a.avg_family_income, b.avg_family_income);})
+    d3.select('#sort-desc-income').classed('active', true);
+    d3.select('#sort-desc-poverty').classed('active', false);
+    d3.select('#filter-poverty').classed('active', false);
+    d3.select('#filter-income').classed('active', false);
+  })
+  
+
+  d3.select("#sort-desc-poverty")
+  .on("click", function() {
+    tbody.selectAll("tr").sort(function(a, b) {
+      return d3.descending(a.poverty_rate, b.poverty_rate);})
+    d3.select('#sort-desc-income').classed('active', false);
+    d3.select('#sort-desc-poverty').classed('active', true);
+    d3.select('#filter-poverty').classed('active', false);
+    d3.select('#filter-income').classed('active', false);
+
+  })
+
+d3.select("#filter-income")
+  .on("click", function() {
+    tbody.selectAll("tr")
+    .filter(function(a) {
+      return a.avg_family_income > 99000;})
+    d3.select('#sort-desc-income').classed('active', false);
+    d3.select('#sort-desc-poverty').classed('active', false);
+    d3.select('#filter-poverty').classed('active', false);
+    d3.select('#filter-income').classed('active', true);
+  })
+
+
+    
+
+/*d3.select("#sort-desc-income")
   .on("click", function(){
     sortTable();
     d3.select('#sort-desc-income').classed('active', true);
     d3.select('#sort-desc-poverty').classed('active', false);
   });
 
-  var sortTable = function(a,b) {
-    d3.selectAll("tbody")
-    .data(dc_info)
-    .sort(function (a,b) { return b.avg_family_income - a.avg_family_income; });
 
-  };
+var sortTable = function() {
+ d3.selectAll("tbody")
+  .sort(function (a,b) { 
+    if (options.sorted) {
+    options.sorted = false;
+    }
+  updateTable();
+  })
+};
+
 
 
 
