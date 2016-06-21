@@ -243,7 +243,7 @@ function compareStrings (a,b) {
     .html(function(d) { return d.neighborhood});
 
   rows.append("td")
-    .html(function(d) { return d.avg_family_income});
+    .html(function(d) { return "$" + d3.format(",")(d.avg_family_income)});
 
   rows.append("td")
     .append("div")
@@ -251,7 +251,7 @@ function compareStrings (a,b) {
     .style("width", function(d) { return ((d.avg_family_income / MAX_INCOME) * 100 + '%')});
 
   rows.append("td")
-    .html(function(d) { return d.poverty_rate});
+    .html(function(d) { return d.poverty_rate + "%"});
 
   rows.append("td")
     .append("div")
@@ -311,6 +311,7 @@ d3.select("#filter-income")
     tbody.selectAll("tr")
     .filter(function(a) {
       return a.avg_family_income > 99000;})
+
     d3.select('#sort-desc-income').classed('active', false);
     d3.select('#sort-desc-poverty').classed('active', false);
     d3.select('#filter-poverty').classed('active', false);
