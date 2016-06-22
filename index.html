@@ -220,12 +220,7 @@ function updateTable(){
 
 //var data = dc_info.slice()
 
-  if (options.sorted) {
-    if (options.sorted === 'desc-income') 
-      d3.selectAll("rows")
-      .sort(function (a,b) { 
-        return d3.descending(a.avg_family_income, b. avg_family_income);});
-    }
+  
 
   
 
@@ -243,12 +238,39 @@ function compareStrings (a,b) {
  var rows = tbody.selectAll("tr")
     .data(dc_info)
     .enter()
-    .append("tr")
-    .sort(function (a,b) { 
-     return compareStrings(a.neighborhood, b.neighborhood);
-   });
-     
+    if (options.sorted) {
+      if (options.sorted === 'desc-income') {
+        rows.sort(function (a,b) {return d3.descending(a.avg_family_income, b. avg_family_income); });
+      }  
+    } 
+    else { 
+        rows.sort(function (a,b) { return compareStrings(a.neighborhood, b.neighborhood); });
+      }
+  rows.append("tr")
+  
 
+/*
+ var rows = tbody.selectAll("tr")
+  .data(dc_info)
+  .enter()
+  .append("tr")
+  if (options.sorted) {
+    if (options.sorted === 'desc-income') {
+      rows.sort(function (a,b) { return d3.descending (a.avg_family_income, b.avg_family_income); });
+    } else if (options.sorted === 'desc-poverty') {
+      rows.sort(function (a,b) { return d3.descending (a.poverty_rate, b.poverty_rate); });
+    } 
+  } else if (options.filtered) {
+      if (options.filtered === 'filter-high-poverty') {
+        rows.filter(function (a) { return a.poverty_rate > 20; });
+      } else if (options.filtered === 'filter-high-income') {
+      rows.filter(function (a) { return a.avg_family_income > 99000; });
+    }   
+  } else {
+      rows.sort(function (a,b) { return compareStrings (a.neighborhood, b.neighborhood);});
+    }
+
+  */
 
 
   rows.append("td")
@@ -301,7 +323,7 @@ d3.select("#sort-desc-income")
     if (options.sorted === 'desc-income') {
     options.sorted = false;
   } else {
-    options.sorted = 'desc';
+    options.sorted = 'desc-income';
   }
     updateTable();
     d3.select('#sort-desc-income').classed('active', true);
@@ -310,23 +332,51 @@ d3.select("#sort-desc-income")
     d3.select('#filter-income').classed('active', false);
   })
   
+  d3.select("#sort-desc-poverty")
+  .on("click", function() {
+    if (options.sorted === 'desc-poverty') {
+    options.sorted = false;
+  } else {
+    options.sorted = 'desc-poverty';
+  }
+    updateTable();
+    d3.select('#sort-desc-income').classed('active', false);
+    d3.select('#sort-desc-poverty').classed('active', true);
+    d3.select('#filter-poverty').classed('active', false);
+    d3.select('#filter-income').classed('active', false);
+  })
 
-/*  
+ 
+
+d3.select("#filter-poverty")
+  .on("click", function() {
+    if (options.filtered === 'filter-high-poverty') {
+    options.filtered = false;
+  } else {
+    options.filtered = 'filter-high-poverty';
+  }
+    updateTable();
+    d3.select('#sort-desc-income').classed('active', false);
+    d3.select('#sort-desc-poverty').classed('active', false);
+    d3.select('#filter-poverty').classed('active', true);
+    d3.select('#filter-income').classed('active', false);
+  })
 
 d3.select("#filter-income")
   .on("click", function() {
-    tbody.selectAll("tr")
-    .filter(function(a) {
-      return a.avg_family_income > 99000;})
-
+    if (options.filtered === 'filter-high-income') {
+    options.filtered = false;
+  } else {
+    options.filtered = 'filter-high-income';
+  }
+    updateTable();
     d3.select('#sort-desc-income').classed('active', false);
     d3.select('#sort-desc-poverty').classed('active', false);
     d3.select('#filter-poverty').classed('active', false);
     d3.select('#filter-income').classed('active', true);
   })
 
-
- */   
+  
 
 /*d3.select("#sort-desc-income")
   .on("click", function(){
