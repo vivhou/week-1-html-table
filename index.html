@@ -214,8 +214,20 @@ var options = {
 var tbody = d3.select("tbody");
 
 
+
 function updateTable(){
   tbody.html("");
+
+//var data = dc_info.slice()
+
+  if (options.sorted) {
+    if (options.sorted === 'desc-income') 
+      d3.selectAll("rows")
+      .sort(function (a,b) { 
+        return d3.descending(a.avg_family_income, b. avg_family_income);});
+    }
+
+  
 
   //Alphabetize table by neighborhood name
 
@@ -286,8 +298,12 @@ d3.select("#reset-button")
 
 d3.select("#sort-desc-income")
   .on("click", function() {
-    tbody.selectAll("tr").sort(function(a, b) {
-      return d3.descending(a.avg_family_income, b.avg_family_income);})
+    if (options.sorted === 'desc-income') {
+    options.sorted = false;
+  } else {
+    options.sorted = 'desc';
+  }
+    updateTable();
     d3.select('#sort-desc-income').classed('active', true);
     d3.select('#sort-desc-poverty').classed('active', false);
     d3.select('#filter-poverty').classed('active', false);
@@ -295,16 +311,7 @@ d3.select("#sort-desc-income")
   })
   
 
-  d3.select("#sort-desc-poverty")
-  .on("click", function() {
-    tbody.selectAll("tr").sort(function(a, b) {
-      return d3.descending(a.poverty_rate, b.poverty_rate);})
-    d3.select('#sort-desc-income').classed('active', false);
-    d3.select('#sort-desc-poverty').classed('active', true);
-    d3.select('#filter-poverty').classed('active', false);
-    d3.select('#filter-income').classed('active', false);
-
-  })
+/*  
 
 d3.select("#filter-income")
   .on("click", function() {
@@ -319,7 +326,7 @@ d3.select("#filter-income")
   })
 
 
-    
+ */   
 
 /*d3.select("#sort-desc-income")
   .on("click", function(){
