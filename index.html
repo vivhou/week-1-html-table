@@ -115,11 +115,6 @@
             <button type="button" class="btn btn-primary outline" id="sort-desc-income">Average Family Income</button>    
           </div>
           <h2></h2>
-          <div class="btn-group" role="group" aria-label="">
-          <button type="button" class="btn btn-primary outline" id="reset-button">Reset</button>  
-          </div>
-     
-
         </div>
       </div>
         
@@ -208,7 +203,8 @@ var MAX_POVERTY = 45;
 var options = {
   sorted: false,
   filtered: false,
-  page:0
+  page:0,
+  reset: false
 };
 
 var tbody = d3.select("tbody");
@@ -218,7 +214,7 @@ var tbody = d3.select("tbody");
 function updateTable(){
   tbody.html("");
 
-//var data = dc_info.slice()
+var data = dc_info.slice()
 
   
 
@@ -234,19 +230,28 @@ function compareStrings (a,b) {
 } 
 
 
-
- var rows = tbody.selectAll("tr")
-    .data(dc_info)
-    .enter()
     if (options.sorted) {
       if (options.sorted === 'desc-income') {
-        rows.sort(function (a,b) {return d3.descending(a.avg_family_income, b. avg_family_income); });
+        console.log("sorted")
+        data.sort(function (a,b) {
+          return d3.descending(a.avg_family_income, b.avg_family_income); });
       }  
-    } 
+    } else if (options.filtered) {
+      if (options.filtered === 'filter-high-poverty') {
+        data = data.filter(function (a) { return a.poverty_rate > 20; });
+      } else if (options.filtered === 'filter-high-income') {
+      data = data.filter(function (a) { return a.avg_family_income > 99000; });
+    }   
+  }
     else { 
-        rows.sort(function (a,b) { return compareStrings(a.neighborhood, b.neighborhood); });
+        data.sort(function (a,b) { return compareStrings(a.neighborhood, b.neighborhood); });
       }
-  rows.append("tr")
+
+ var rows = tbody.selectAll("tr")
+    .data(data)
+    .enter().append("tr")
+
+  //rows.append("tr")
   
 
 /*
@@ -308,15 +313,6 @@ updateTable();
 
 
 
-d3.select("#reset-button")
-  .on("click", function() {
-    updateTable()
-    d3.select('#sort-desc-income').classed('active', true);
-    d3.select('#sort-desc-poverty').classed('active', false);
-    d3.select('#filter-poverty').classed('active', false);
-    d3.select('#filter-income').classed('active', false);
-  })
-  
 
 d3.select("#sort-desc-income")
   .on("click", function() {
