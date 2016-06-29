@@ -229,53 +229,30 @@ function compareStrings (a,b) {
   return (a < b) ? -1 : (a > b) ? 1: 0;
 } 
 
+  console.log(options.sorted)
+  if (options.sorted) {
+     data.sort(function (a,b) { 
+        return d3.descending(a[options.sorted], b[options.sorted]); 
+     });
+  } else { 
+     data.sort(function (a,b) { 
+        return compareStrings(a.neighborhood, b.neighborhood); 
+     });
+  }
 
-    if (options.sorted) {
-      if (options.sorted === 'desc-income') {
-        console.log("sorted")
-        data.sort(function (a,b) {
-          return d3.descending(a.avg_family_income, b.avg_family_income); });
-      }  
-    } else if (options.filtered) {
+  if (options.filtered) {
       if (options.filtered === 'filter-high-poverty') {
         data = data.filter(function (a) { return a.poverty_rate > 20; });
       } else if (options.filtered === 'filter-high-income') {
       data = data.filter(function (a) { return a.avg_family_income > 99000; });
     }   
   }
-    else { 
-        data.sort(function (a,b) { return compareStrings(a.neighborhood, b.neighborhood); });
-      }
+
 
  var rows = tbody.selectAll("tr")
     .data(data)
     .enter().append("tr")
 
-  //rows.append("tr")
-  
-
-/*
- var rows = tbody.selectAll("tr")
-  .data(dc_info)
-  .enter()
-  .append("tr")
-  if (options.sorted) {
-    if (options.sorted === 'desc-income') {
-      rows.sort(function (a,b) { return d3.descending (a.avg_family_income, b.avg_family_income); });
-    } else if (options.sorted === 'desc-poverty') {
-      rows.sort(function (a,b) { return d3.descending (a.poverty_rate, b.poverty_rate); });
-    } 
-  } else if (options.filtered) {
-      if (options.filtered === 'filter-high-poverty') {
-        rows.filter(function (a) { return a.poverty_rate > 20; });
-      } else if (options.filtered === 'filter-high-income') {
-      rows.filter(function (a) { return a.avg_family_income > 99000; });
-    }   
-  } else {
-      rows.sort(function (a,b) { return compareStrings (a.neighborhood, b.neighborhood);});
-    }
-
-  */
 
 
   rows.append("td")
@@ -297,15 +274,6 @@ function compareStrings (a,b) {
     .classed("bar", true)
     .style("width", function(d) { return ((d.poverty_rate / MAX_POVERTY) * 100 + '%')})
 
-
-
-/*
-  dc_info.select("#sort-desc-income")
-    .data(dc_info)
-    .on("click", function(){
-    rows.sort(function(a, b) { return b.avg_family_income - a.avg_family_income; });
-    });
-    */
 };
 
 
@@ -316,10 +284,10 @@ updateTable();
 
 d3.select("#sort-desc-income")
   .on("click", function() {
-    if (options.sorted === 'desc-income') {
+    if (options.sorted === 'avg_family_income') {
     options.sorted = false;
   } else {
-    options.sorted = 'desc-income';
+    options.sorted = 'avg_family_income';
   }
     updateTable();
     d3.select('#sort-desc-income').classed('active', true);
@@ -330,16 +298,16 @@ d3.select("#sort-desc-income")
   
   d3.select("#sort-desc-poverty")
   .on("click", function() {
-    if (options.sorted === 'desc-poverty') {
-    options.sorted = false;
-  } else {
-    options.sorted = 'desc-poverty';
-  }
-    updateTable();
-    d3.select('#sort-desc-income').classed('active', false);
-    d3.select('#sort-desc-poverty').classed('active', true);
-    d3.select('#filter-poverty').classed('active', false);
-    d3.select('#filter-income').classed('active', false);
+     if (options.sorted === 'poverty_rate') {
+        options.sorted = false;
+     } else { 
+        options.sorted = 'poverty_rate';
+     }
+     updateTable();
+     d3.select('#sort-desc-income').classed('active', false);
+     d3.select('#sort-desc-poverty').classed('active', true);
+     d3.select('#filter-poverty').classed('active', false);
+     d3.select('#filter-income').classed('active', false);
   })
 
  
@@ -373,142 +341,6 @@ d3.select("#filter-income")
   })
 
   
-
-/*d3.select("#sort-desc-income")
-  .on("click", function(){
-    sortTable();
-    d3.select('#sort-desc-income').classed('active', true);
-    d3.select('#sort-desc-poverty').classed('active', false);
-  });
-
-
-var sortTable = function() {
- d3.selectAll("tbody")
-  .sort(function (a,b) { 
-    if (options.sorted) {
-    options.sorted = false;
-    }
-  updateTable();
-  })
-};
-
-
-
-
-
-
-
-
-//Sort by neighborhood name and poverty rate in descending order
-
-/*function compareStrings (a,b) {
-  a = a.toLowerCase();
-  b = b.toLowerCase();
-  return (a < b) ? -1 : (a > b) ? 1: 0;
-}
-dc_info.sort(function (a, b) {
-  return compareStrings(a.neighborhood, b.neighborhood);
-});
-
-//Sort by income and poverty rate
-
-
-function updateTable() {
-
-  var data = dc_info.slice()
-
-
-//Filter by Poverty>20%
-  if (options.filtered) {
-     if (options.filtered === 'high-poverty') {
-        data = data.filter(function (a) { 
-          return a.poverty_rate > 20; });
-      }
-}
-//Filter by 6 figure income
-  if (options.filtered) {
-    if (options.filtered === '6-figure-income'){
-      data = data.filter(function (a) {
-        return a.avg_family_income > 99999; });
-    }
-}
-
-//Sort
-
-if (options.sorted) {
-    if (options.sorted === 'desc') {
-      data.sort(function (a, b) { return b.avg_family_income - a.avg_family_income; });
-    } else if (options.sorted === 'desc-poverty') {
-      data.sort(function (a, b) { return b.poverty_rate - a.poverty_rate; });
-    }
- }
-
-//My attempt at Pagination for Next button, not working though
-
-
-
-  if (options.page) {
-    if (options.page === 'next-page'){
-      
-      data = data.slice(function (pageno, max_num) {
-        console.log('3');
-        var pageno = 2;
-        var rows = 10;
-        
-        return data.slice((pageno - 1) * rows, pageno * rows); });
-    }
-  } 
-
-  
-  
-
-
-document.getElementById('sort-desc-income').addEventListener('click', function() {
-  if (options.sorted === 'desc') {
-    options.sorted = false;
-  } else {
-    options.sorted = 'desc';
-  }
-  updateTable();
-});
-
-document.getElementById('sort-desc-poverty').addEventListener('click', function() {
-  if (options.sorted === 'desc-poverty') {
-    options.sorted = false;
-  } else {
-    options.sorted = 'desc-poverty';
-  }
-  updateTable();
-});
-
-document.getElementById('filter-poverty').addEventListener('click', function() {
-  if (options.filtered === 'high-poverty') {
-    options.filtered = false;
-  } else {
-    options.filtered = 'high-poverty';
-  }
-  updateTable();
-});
-
-document.getElementById('filter-income').addEventListener('click', function() {
-  if (options.filtered === '6-figure-income') {
-    options.filtered = false;
-  } else {
-    options.filtered = '6-figure-income';
-  }
-  updateTable();
-});
-
-document.getElementById('page-next').addEventListener('click', function() {
-  if (options.page === 'next-page') {
-    options.page = 0;
-  } else {
-    options.page = 'next-page';
-  }
-  updateTable();
-});
-*/
-
 </script>
 </body>
 </html>
